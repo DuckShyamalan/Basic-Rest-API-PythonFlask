@@ -1,8 +1,6 @@
 variables:
-  # Replace this name with that of the Azure service connection in your DevOps project
-  ConnectedServiceName: '<your-service-connection>'
+  ConnectedServiceName: '<BasicRestAPIPythonFlask>'
 
-  # Replace this name to match the name of the App Service you created earlier
   WebAppName: 'basicrestapipythonflask-flaskpipelines'
 
 trigger:
@@ -12,10 +10,30 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.6'
+    architecture: 'x64'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip'
+    replaceExistingArchive: true
+    verbose: # (no value); this input is optional
+
+- task: AzureRMWebAppDeployment@4
+  displayName: Azure App Service Deploy
+  inputs:
+    appType: webAppLinux
+    RuntimeStack: 'PYTHON|3.6'
+    ConnectedServiceName: $(ConnectedServiceName)
+    WebAppName: $(WebAppName)
+    Package: '$(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip'
+
+    # The following parameter is specific to the Flask example code. You may
+    # or may not need a startup command for your own app.
+
+    StartupCommand: 'gunicorn --bind=0.0.0.0 --workers=4 startup:app'
