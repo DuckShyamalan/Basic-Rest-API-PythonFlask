@@ -1,7 +1,9 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+variables:
+  # Replace this name with that of the Azure service connection in your DevOps project
+  ConnectedServiceName: '<your-service-connection>'
+
+  # Replace this name to match the name of the App Service you created earlier
+  WebAppName: 'basicrestapipythonflask-flaskpipelines'
 
 trigger:
 - master
