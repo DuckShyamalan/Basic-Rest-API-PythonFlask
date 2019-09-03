@@ -1,5 +1,5 @@
 variables:
-  ConnectedServiceName: 'BasicRestAPIPythonFlask'
+  ConnectedServiceName: '<Basic-Rest-API-PythonFlask>'
 
   WebAppName: 'basicrestapipythonflask-flaskpipelines'
 
@@ -22,12 +22,12 @@ steps:
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip'
     replaceExistingArchive: true
-    verbose: # (no value); this input is optional
+    verbose: false # (no value); this input is optional
 
 - task: AzureRMWebAppDeployment@4
   displayName: Azure App Service Deploy
   inputs:
-    appType: webAppLinux
+    appType: webApp
     RuntimeStack: 'PYTHON|3.6'
     ConnectedServiceName: $(ConnectedServiceName)
     WebAppName: $(WebAppName)
