@@ -24,16 +24,24 @@ steps:
     replaceExistingArchive: true
     verbose: false # (no value); this input is optional
 
-- task: AzureRMWebAppDeployment@4
-  displayName: Azure App Service Deploy
-  inputs:
-    appType: webApp
-    RuntimeStack: 'PYTHON|3.6'
-    ConnectedServiceName: $(ConnectedServiceName)
-    WebAppName: $(WebAppName)
-    Package: '$(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip'
+- #task: AzureRMWebAppDeployment@4
+  #displayName: Azure App Service Deploy
+  #inputs:
+    #appType: webApp
+    #RuntimeStack: 'PYTHON|3.6'
+    #ConnectedServiceName: $(ConnectedServiceName)
+    #WebAppName: $(WebAppName)
+    #Package: '$(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip'
 
     # The following parameter is specific to the Flask example code. You may
     # or may not need a startup command for your own app.
 
-    StartupCommand: 'gunicorn --bind=0.0.0.0 --workers=4 startup:app'
+    #StartupCommand: 'gunicorn --bind=0.0.0.0 --workers=4 startup:app'
+
+- task: AzureWebApp@1
+  inputs:
+    appType: 'webApp'
+    appName: $(WebAppName)
+    azureSubscription: 'Pay-As-You-Go(e3eb1771-77b5-4e12-a05c-f61f065541d6)'
+    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    deploymentMethod: 'auto'
