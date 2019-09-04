@@ -43,4 +43,5 @@ steps:
     ConnectionType: 'AzureRM'
     appType: 'webApp'
     WebAppName: $(WebAppName)
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    Package: '$(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip'
+    #packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
