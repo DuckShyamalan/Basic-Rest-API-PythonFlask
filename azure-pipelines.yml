@@ -1,7 +1,7 @@
 variables:
   ConnectedServiceName: '<BasicRestAPIPythonFlask>'
 
-  WebAppName: 'basicrestapipythonflask-flaskpipelines'
+  WebAppName: 'syedfatir-flaskpipelines'
 
 trigger:
 - master
