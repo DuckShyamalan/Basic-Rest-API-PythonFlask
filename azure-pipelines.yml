@@ -40,8 +40,7 @@ steps:
 
 - task: AzureRmWebAppDeployment@4
   inputs:
-    ConnectionType: 'GitHub'
+    ConnectionType: 'AzureRM'
     appType: 'webApp'
-    ConnectedServiceName: 'basicrestapipythonflask'
     WebAppName: $(WebAppName)
     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
