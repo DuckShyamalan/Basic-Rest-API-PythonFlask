@@ -1,5 +1,5 @@
 variables:
-  ConnectedServiceName: 'Pay-As-You-Go(e3eb1771-77b5-4e12-a05c-f61f065541d6)'
+  ConnectedServiceName: '<Pay-As-You-Go(e3eb1771-77b5-4e12-a05c-f61f065541d6)>'
 
   WebAppName: 'basicrestapipythonflask-flaskpipelines'
 
