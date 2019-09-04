@@ -1,7 +1,7 @@
 variables:
   ConnectedServiceName: 'BasicRestAPIPythonFlask'
 
-  WebAppName: 'BasicRestAPIPythonFlask-flaskpipelines'
+  WebAppName: 'basicrestapipythonflask-flaskpipelines'
 
 trigger:
 - master
