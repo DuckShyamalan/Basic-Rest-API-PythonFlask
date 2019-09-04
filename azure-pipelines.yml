@@ -42,5 +42,6 @@ steps:
   inputs:
     ConnectionType: 'AzureRM'
     appType: 'webApp'
+    ConnectedServiceName: 'basicrestapipythonflask'
     WebAppName: $(WebAppName)
     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
