@@ -30,7 +30,7 @@ steps:
     appType: webApp
     RuntimeStack: 'PYTHON|3.6'
     #ConnectedServiceName: $(ConnectedServiceName)
-    
+    ConnectedServiceName: 'basicrestapipythonflask'
     WebAppName: $(WebAppName)
     Package: '$(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip'
 
