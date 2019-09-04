@@ -1,7 +1,7 @@
 variables:
   ConnectedServiceName: '<BasicRestAPIPythonFlask>'
 
-  WebAppName: 'syedfatir-flaskpipelines'
+  WebAppName: 'BasicRestAPIPythonFlask-flaskpipelines'
 
 trigger:
 - master
@@ -29,7 +29,7 @@ steps:
   inputs:
     appType: webApp
     RuntimeStack: 'PYTHON|3.6'
-    ConnectedServiceName: $(ConnectedServiceName)
+    ConnectedServiceName: '$(ConnectedServiceName)'
     WebAppName: $(WebAppName)
     Package: '$(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip'
 
