@@ -1,5 +1,5 @@
 variables:
-  ConnectedServiceName: 'DuckShyamalan.Basic-Rest-API-PythonFlask'
+  ConnectedServiceName: 'BasicRestAPIPythonFlask'
 
   WebAppName: 'basicrestapipythonflask-flaskpipelines'
 
