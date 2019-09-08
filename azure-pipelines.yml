@@ -1,0 +1,40 @@
+variables:
+  ConnectedServiceName: 'Pay-As-You-Go(e3eb1771-77b5-4e12-a05c-f61f065541d6)'
+
+  WebAppName: 'basicrestapipythonflask-flaskpipelines'
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.6'
+    architecture: 'x64'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip'
+    replaceExistingArchive: true
+    verbose: false # (no value); this input is optional
+
+- task: AzureRMWebAppDeployment@4
+  displayName: Azure App Service Deploy
+  inputs:
+    appType: webApp
+    RuntimeStack: 'PYTHON|3.6'
+    #ConnectedServiceName: $(ConnectedServiceName)
+    ConnectedServiceName: 'basicrestapipythonflask'
+    WebAppName: $(WebAppName)
+    Package: '$(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip'
+
+    # The following parameter is specific to the Flask example code. You may
+    # or may not need a startup command for your own app.
+
+    StartupCommand: 'gunicorn --bind=0.0.0.0 --workers=4 startup:app'

@@ -40,6 +40,7 @@ class Book(db.Model):
         #bookToDelete.isDeleted = True
         #db.session.commit()
         #return bookToDelete
+
         is_successful = Book.query.filter_by(isbn=_isbn).delete()
         db.session.commit()
         return bool(is_successful)
