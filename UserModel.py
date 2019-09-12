@@ -30,3 +30,9 @@ class User(db.Model):
         new_user = User(username=_username, password=_password)
         db.session.add(new_user)
         db.session.commit()
+        return
+
+    def deleteUser(_username, _password):
+        is_successful = User.query.filter_by(username=_username).filter_by(password=_password).delete()
+        db.session.commit()
+        return bool(is_successful)

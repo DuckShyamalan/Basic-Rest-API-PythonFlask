@@ -2,49 +2,115 @@
 <html lang="en">
   <head>
     <title>Books</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <!--link href="books-clientside/jumbotronoverride.css" rel="stylesheet" type="text/css" /-->
 
     <div class="jumbotron">
         <h1 class="display-4">Books</h1>
-        <p class="lead">Please fill all of the fields below</p> <!--do i put buttons for adding/deleting etc. here?-->
+        <p class="lead">Hello, {{username}}</p> <!--do i put buttons for adding/deleting etc. here?-->
         <!--button class="btn btn-outline-primary" style="text-align-last: right" type="submit" formaction="/books-clientside/loggedout.html">Log out</button-->
-        <a class="btn btn-outline-primary" href="/books-clientside/loggedout.html" role="button">Log out</a>
+        <a class="btn btn-outline-primary" href="loggedout.html" role="button">Log out</a>
     </div>
 
     <div class="container">
         <form>
             <div class="row"> <!--add functionality to buttons; again integrating w/ db tho-->
                 <div class="col-md-4">
-                    <button type="button" class="btn btn-secondary">Add a book</button>
+                    <button type="submit" class="btn btn-secondary" formaction="/templates/addbook.html">Add a book</button>
                 </div>
                 <div class="col-md-4">
-                    <button type="button" class="btn btn-secondary">Update book details</button>
+                    <button type="submit" class="btn btn-secondary" formaction="/templates/updatebook.html">Update book details</button>
                 </div>
+                <br>
                 <div class="col-md-4">
-                    <button type="button" class="btn btn-secondary">Delete a book</button>
+                    <button type="submit" class="btn btn-secondary" formaction="/templates/deletebook.html">Delete a book</button>
                 </div>
             </div>
-            <ul class="list-group"> <!--put books here somehow; integrate with database-->
-                <li class="list-group-item">book#1</li>
-                <li class="list-group-item">book#2</li>
-                <li class="list-group-item">book#3</li>
-            </ul>
+            <br>
+            <table class="table" id="dataTable"> <!--put books here somehow; integrate with database-->
+                <thead>
+                    <tr>
+                      <!-- <th scope="col">#</th> -->
+                      <th scope="col">Title</th>
+                      <th scope="col">Author</th>
+                      <th scope="col">ISBN</th>
+                      <th scope="col">Year</th>
+                    </tr>
+                </thead>
+                <!-- <tbody>
+                    <tr>
+                        <th scope="row">{book.}}</th>
+                        <td>{{book.title}}</td>
+                        <td>{{book.author}}</td>
+                        <td>{{book.isbn}}</td>
+                        <td>{{book.year}}</td>
+                    </tr>
+                </tbody> -->
+            </table>
         </form>
 
     </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //$("#item1").on("click", clickLogin);
+            //var bookTitle; var bookAuthor; var bookISBN; var bookYear;
+            debugger;
+            
+            $.ajax({
+                type: "GET",
+                url: "http://127.0.0.1:5000/mainpage",
+                contentType: "application/json",
+                dataType: "json",
+                success: function(data) {
+                    console.log(data);
+                    var html_to_append = '<thead><tr>' +
+                      '<th scope="col">Title</th>' +
+                      '<th scope="col">Author</th>' +
+                      '<th scope="col">ISBN</th>' +
+                      '<th scope="col">Year</th>' +
+                    '</tr></thead>';
+                    $.each(data, function(i, item) {  //item=[..],[..],[..] ; i="books" ; keys of item = 0,1,2
+                        /*data[i] + '</p></div>'+  //data[i] = whole dictionary
+                        Object.values(data[i])[1] + '</p></div>'+ //one of the elements of the dict.
+                        Object.values(Object.values(item)[0]) + //gives the 1st dict entry*/
+                        for (var j=0; j < Object.keys(data[i]).length; j++) {
+                            //html_to_append += '<tr><td>' + Object.values(Object.values(item)[j]) + '</td></tr>' //displays whole entry as comma separated vals
+                            html_to_append += '<tbody><tr><td>' + Object.values(Object.values(item)[j])[2] + '</td>' + 
+                            '<td>' + Object.values(Object.values(item)[j])[0] + '</td>' + 
+                            '<td>' + Object.values(Object.values(item)[j])[1] + '</td>' + 
+                            '<td>' + Object.values(Object.values(item)[j])[3] + '</td></tr></tbody>'
+                            // [2], [0], [1], [3] --> title, author, isbn, year
+                        }
+                    });
+                    $("#dataTable").html(html_to_append);
+                },
+                error: function() {
+                    console.log(data);
+                }
+            }).done(function () {
+                $("ul").each(function (index, element) {
+                    // element == this
+                    this.getAttribute("data-id");
+                });
+            });
+        });
+    </script>
 
   </body>
 </html>

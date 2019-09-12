@@ -1,6 +1,6 @@
 import datetime
 
-from flask import Flask, jsonify, request, Response
+from flask import Flask, jsonify, request, Response, render_template
 import json
 from BookModel import *
 from settings import *
@@ -8,22 +8,38 @@ import jwt
 from UserModel import User
 from functools import wraps
 
-
+CORS(app)
 app.config["SECRET_KEY"] = "secret"
 
 
-@app.route("/login", methods=["POST"])
+@app.route("/login", methods=["POST", "GET"])
+#@app.route("/index", methods=["POST", "GET"])
 def get_token():
     request_data = request.get_json()
     username = str(request_data["username"])
     password = str(request_data["password"])
     match = User.usernamePasswordMatch(username, password)
-    if match:
-        expiration_date = datetime.datetime.utcnow() + datetime.timedelta(seconds=100)
-        token = jwt.encode({"exp": expiration_date}, app.config["SECRET_KEY"], algorithm="HS256")
-        return token
+    if request.method == "POST":
+        if match:
+            expiration_date = datetime.datetime.utcnow() + datetime.timedelta(seconds=10000)
+            token = jwt.encode({"exp": expiration_date}, app.config["SECRET_KEY"], algorithm="HS256")
+            return token
+            #return render_template("mainpage.html", username=username, match=match)
+        else:
+            return Response("", 401, mimetype="application/json")
     else:
-        return Response("", 401, mimetype="application/json")
+        return render_template("mainpage.html", username=username, match=match)
+
+
+@app.route("/signup", methods=["POST"])
+def addUser():
+    request_data = request.get_json()
+    username = str(request_data["username"])
+    password = str(request_data["password"])
+    User.createUser(username, password)
+    get_token()
+    response = Response("", status=201, mimetype="application/json")
+    return response
 
 
 def validBookObject(bookObject):
@@ -52,19 +68,23 @@ def token_required(f):
     return wrapper
 
 
-@app.route("/books")
+@app.route("/mainpage")
+#@app.route("/books")
 def getBooks():
     return jsonify({"books": Book.getAllBooks()})
+    #return render_template("mainpage.html", books={"books": Book.getAllBooks()})
 
 
-@app.route("/books", methods=["POST"])
-@token_required  # uses above token_required() method
+@app.route("/mainpage", methods=["POST"])
+#@app.route("/books", methods=["POST"])
+#@token_required  # uses above token_required() method
 def addBook():
     request_data = request.get_json()
     if validBookObject(request_data):
         Book.addBook(request_data["title"], request_data["author"], request_data["isbn"], request_data["year"])
         response = Response("", status=201, mimetype="application/json")
-        response.headers["Location"] = "/books/" + str(request_data["isbn"])
+        response.headers["Location"] = "/mainpage/" + str(request_data["isbn"])
+        #response.headers["Location"] = "/books/" + str(request_data["isbn"])
         return response
     else:
         invalidBookObjectErrorMsg = {
@@ -76,14 +96,16 @@ def addBook():
         return response
 
 
-@app.route("/books/<int:isbn>")
+@app.route("/mainpage/<int:isbn>")
+#@app.route("/books/<int:isbn>")
 def getBookByISBN(isbn):
     return_value = Book.getBook(isbn)
     return jsonify(return_value)
 
 
-@app.route("/books/<int:isbn>", methods=["PUT"])
-@token_required
+@app.route("/mainpage/<int:isbn>", methods=["PUT"])
+#@app.route("/books/<int:isbn>", methods=["PUT"])
+#@token_required
 def replaceBook(isbn):
     request_data = request.get_json()
     if not validPutRequest(request_data):
@@ -98,8 +120,9 @@ def replaceBook(isbn):
     return response
 
 
-@app.route("/books/<int:isbn>", methods=["PATCH"])
-@token_required
+@app.route("/mainpage/<int:isbn>", methods=["PATCH"])
+#@app.route("/books/<int:isbn>", methods=["PATCH"])
+#@token_required
 def updateBook(isbn):
     request_data = request.get_json()
     updated_book = {}
@@ -111,12 +134,14 @@ def updateBook(isbn):
         Book.updateBookYear(isbn, request_data["year"])
 
     response = Response("", status=204)
-    response.headers["Location"] = "/books/" + str(isbn)
+    response.headers["Location"] = "/mainpage/" + str(isbn)
+    #response.headers["Location"] = "/books/" + str(isbn)
     return response
 
 
-@app.route("/books/<int:isbn>", methods=["DELETE"])
-@token_required
+@app.route("/mainpage/<int:isbn>", methods=["DELETE"])
+#@app.route("/books/<int:isbn>", methods=["DELETE"])
+#@token_required
 def deleteBook(isbn):  # TODO: make this a soft delete -- don't delete from database
     #i = 0
     #for book in Book.getAllBooks():

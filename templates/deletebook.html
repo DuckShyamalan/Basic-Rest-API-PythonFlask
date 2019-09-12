@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Delete a book</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <div class="jumbotron">
+        <h1 class="display-3">Deleting a book</h1>
+        <p class="lead">Enter the ISBN of the book you would like to delete</p>
+    </div>
+    <div class="container">
+        <form>
+            <label for="bookISBN">ISBN</label>
+            <input type="text" class="form-control" placeholder="Enter the ISBN of the book" id="bookISBN" pattern="[0-9]+" required>
+            <br>
+            
+        </form>
+        <a class="btn btn-primary" id="submit" href="mainpage.html" role="button">Submit</a>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#submit").on("click", clickDelete);
+        });
+
+        function clickDelete() {
+            debugger;
+            var title = $("#bookTitle").val();
+            var author = $("#bookAuthor").val();
+            var isbn = $("#bookISBN").val();
+            var year = $("#bookYear").val();
+            $.ajax({
+                url: "http://127.0.0.1:5000/mainpage/" + isbn,
+                type: "DELETE",
+                contentType: "application/json",
+                data: JSON.stringify({ "title": title, "author": author, "isbn": isbn, "year": year })
+            }).done(function (data) {
+                //window.location.replace("mainpage.html");
+                $(location).attr("href", "mainpage.html");
+                console.log(data);
+            });
+        };
+    </script>
+  </body>
+</html>
