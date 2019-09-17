@@ -22,8 +22,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     <div class="jumbotron">
+        <img src="/logo.png" alt="BookREST" style="width:20%;height:10%" class="float-right">        
         <h1 class="display-3">Updating a book</h1>
         <p class="lead">Fill in the ISBN and any other fields to update an already existing book</p>
+        <a class="btn btn-outline-dark" href="mainpage.html" role="button">Back</a>
     </div>
     <div class="container">
         <form>
@@ -41,7 +43,8 @@
             <div class="row">
                 <div class="col">
                     <label for="bookISBN">ISBN</label>
-                    <input type="text" class="form-control" placeholder="Enter the ISBN of the book" id="bookISBN" pattern="[0-9]+" required=>
+                    <input type="text" class="form-control" placeholder="Enter the ISBN of the book" id="bookISBN" pattern="[0-9]+" required readonly>
+                    <!-- <input type="search" id="form-autocomplete" class="form-control mdb-autocomplete"> -->
                 </div>
                 <div class="col">
                     <label for="bookYear">Year of publishing</label>
@@ -75,6 +78,26 @@
                 console.log(data);
             });
         };
+    </script>
+    <script>
+        $(document).ready(function () {
+            //var isbn = $("#bookISBN").val();
+            var urlParams = new URLSearchParams(location.search);
+            var isbn = urlParams.get("isbn");
+            $.ajax({
+                type: "GET",
+                url: "http://127.0.0.1:5000/mainpage/" + isbn,
+                dataType: "json",
+                contentType: "application/json",
+                success: function (data) {
+                    console.log(data);
+                    $("#bookTitle").val(data["title"]);
+                    $("#bookAuthor").val(data["author"]);
+                    $("#bookISBN").val(data["isbn"]);
+                    $("#bookYear").val(data["year"]);
+                }
+            });
+        });
     </script>
   </body>
 </html>
