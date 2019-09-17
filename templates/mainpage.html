@@ -71,7 +71,7 @@
             debugger;
             $.ajax({
                 type: "GET",
-                url: "http://127.0.0.1:5000/mainpage",
+                url: "https://basicpythonflaskrest.azurewebsites.net/mainpage",
                 contentType: "application/json",
                 dataType: "json",
                 success: function(data) {
@@ -130,7 +130,7 @@
                 buttons: {
                     confirm: function () {
                         $.ajax({
-                            url: "http://127.0.0.1:5000/mainpage/" + isbn,
+                            url: "https://basicpythonflaskrest.azurewebsites.net/mainpage/" + isbn,
                             type: "DELETE",
                             contentType: "application/json",
                             data: JSON.stringify({ "title": title, "author": author, "isbn": isbn, "year": year })
@@ -154,7 +154,7 @@
             var isbn = $("table tr:nth-child(" + index + ") #isbn").text();
             var year = $("table tr:nth-child(" + index + ") #year").text();
             $.ajax({
-                url: "http://127.0.0.1:5000/mainpage/" + isbn,
+                url: "https://basicpythonflaskrest.azurewebsites.net/mainpage/" + isbn,
                 type: "GET",
                 contentType: "application/json",
                 data: JSON.stringify({ "title": title, "author": author, "isbn": isbn, "year": year }),

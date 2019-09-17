@@ -68,7 +68,7 @@
             var isbn = $("#bookISBN").val();
             var year = $("#bookYear").val();
             $.ajax({
-                url: "http://127.0.0.1:5000/mainpage/" + isbn,
+                url: "https://basicpythonflaskrest.azurewebsites.net/mainpage/" + isbn,
                 type: "PATCH",
                 contentType: "application/json",
                 data: JSON.stringify({ "title": title, "author": author, "isbn": isbn, "year": year })
@@ -86,7 +86,7 @@
             var isbn = urlParams.get("isbn");
             $.ajax({
                 type: "GET",
-                url: "http://127.0.0.1:5000/mainpage/" + isbn,
+                url: "https://basicpythonflaskrest.azurewebsites.net/mainpage/" + isbn,
                 dataType: "json",
                 contentType: "application/json",
                 success: function (data) {

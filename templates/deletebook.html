@@ -46,7 +46,7 @@
             var isbn = $("#bookISBN").val();
             var year = $("#bookYear").val();
             $.ajax({
-                url: "http://127.0.0.1:5000/mainpage/" + isbn,
+                url: "https://basicpythonflaskrest.azurewebsites.net/mainpage/" + isbn,
                 type: "DELETE",
                 contentType: "application/json",
                 data: JSON.stringify({ "title": title, "author": author, "isbn": isbn, "year": year })

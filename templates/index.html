@@ -65,7 +65,7 @@
       var username = $("#inputUser").val();
       var password = $("#inputPassword").val();
       $.ajax({
-        url: "http://127.0.0.1:5000/login",
+        url: "https://basicpythonflaskrest.azurewebsites.net/login",
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({ "username": username, "password": password })
