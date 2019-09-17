@@ -10,3 +10,5 @@ edit: added icons
 edit: updated update/delete mechanisms
 
 edit: updated logo
+
+edit: updated titles
