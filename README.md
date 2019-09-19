@@ -14,3 +14,5 @@ edit: updated logo
 edit: updated titles
 
 edit: changed "127.0.0.1:5000" to "https://basicpythonflaskrest.azurewebsites.net/"
+
+edit: updated titles(again -- removed leading "BookREST")
